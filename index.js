@@ -1,11 +1,12 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+const axios = require("axios");
+const cheerio = require("cheerio");
+const fs = require("fs");
 
 // Get the URL from the command line arguments
 const url = process.argv[2];
 
 if (!url) {
-  console.error('Please provide a URL as a command-line argument.');
+  console.error("Please provide a URL as a command-line argument.");
   process.exit(1);
 }
 
@@ -16,34 +17,29 @@ async function scrapeWebsite() {
     const $ = cheerio.load(response.data);
 
     const links = [];
-    $('a').each((index, element) => {
-      const link = $(element).attr('href');
+    $("a").each((index, element) => {
+      const link = $(element).attr("href");
       if (link) {
         links.push(link);
       }
     });
 
-    const images = [];
-    $('img').each((index, element) => {
-      const image = $(element).attr('src');
-      if (image) {
-        images.push(image);
-      }
-    });
-
-    return { links, images };
+    return links;
   } catch (error) {
-    console.error('Error while scraping:', error);
-    return { links: [], images: [] };
+    console.error("Error while scraping:", error);
+    return { links: [] };
   }
 }
 
 // Call the scraping function
 scrapeWebsite().then(({ links, images }) => {
-  console.log('Links:');
-  links.forEach(link => console.log(link));
-
-  console.log('\nImages:');
-  images.forEach(image => console.log(image));
+  // Save the scraped data to JSON files
+  // Write the links and images to a json file
+  fs.writeFile("scraped_links.json", JSON.stringify(links, null, 2), (err) => {
+    if (err) {
+      console.error("Error saving links to JSON file:", err);
+    } else {
+      console.log("Links saved to scraped_links.json");
+    }
+  });
 });
-        
