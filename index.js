@@ -34,7 +34,7 @@ async function scrapeWebsite() {
 // Call the scraping function
 scrapeWebsite().then(({ links, images }) => {
   // Save the scraped data to JSON files
-  // Write the links and images to a json file
+  // Write the links and images to a json fsile
   fs.writeFile("scraped_links.json", JSON.stringify(links, null, 2), (err) => {
     if (err) {
       console.error("Error saving links to JSON file:", err);

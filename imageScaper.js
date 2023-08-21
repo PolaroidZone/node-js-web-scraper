@@ -33,11 +33,15 @@ async function scrapeWebsite() {
 
 scrapeWebsite().then(({ images }) => {
   //write the images to a json file
-  fs.writeFile(images, JSON.stringify(images, null, 2), (err) => {
-    if (err) {
-      console.error("Error saving images to JSON file:", err);
-    } else {
-      console.log("Images saved to scraped_images.json");
+  fs.writeFile(
+    "scraped_images.json",
+    JSON.stringify(images, null, 2),
+    (err) => {
+      if (err) {
+        console.error("Error saving images to JSON file:", err);
+      } else {
+        console.log("Images saved to scraped_images.json");
+      }
     }
-  });
+  );
 });
